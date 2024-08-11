@@ -1,10 +1,7 @@
-package net.enjoy.springboot.registrationlogin.controller;
+package com.dominicjesse.controllers.controller;
 
 import jakarta.validation.Valid;
-import net.enjoy.springboot.registrationlogin.dto.UserDto;
-import net.enjoy.springboot.registrationlogin.entity.User;
-import net.enjoy.springboot.registrationlogin.service.UserService;
-import net.enjoy.springboot.registrationlogin.service.UserServiceImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,10 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.dominicjesse.controllers.dto.UserDto;
+import com.dominicjesse.controllers.entity.User;
+import com.dominicjesse.controllers.service.UserService;
+import com.dominicjesse.controllers.service.UserServiceImpl;
+
 import java.util.List;
 
 @Controller
-public class AuthController {
+public class LoginController {
     private UserService userService;
 
     @Autowired

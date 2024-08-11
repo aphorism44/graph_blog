@@ -1,12 +1,13 @@
-package net.enjoy.springboot.registrationlogin.service;
+package com.dominicjesse.controllers.service;
 
-import net.enjoy.springboot.registrationlogin.dto.UserDto;
-import net.enjoy.springboot.registrationlogin.entity.Role;
-import net.enjoy.springboot.registrationlogin.entity.User;
-import net.enjoy.springboot.registrationlogin.repository.RoleRepository;
-import net.enjoy.springboot.registrationlogin.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.dominicjesse.controllers.dto.UserDto;
+import com.dominicjesse.controllers.entity.Role;
+import com.dominicjesse.controllers.entity.User;
+import com.dominicjesse.controllers.repository.RoleRepository;
+import com.dominicjesse.controllers.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +27,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(UserDto userDto) {
         User user = new User();
-        user.setName(userDto.getFirstName() + " " + userDto.getLastName());
         user.setEmail(userDto.getEmail());
         //encrypt the password using spring security
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -59,9 +59,6 @@ public class UserServiceImpl implements UserService {
 
     private UserDto convertEntityToDto(User user) {
         UserDto userDto = new UserDto();
-        String[] name = user.getName().split(" ");
-        userDto.setFirstName(name[0]);
-        userDto.setLastName(name[1]);
         userDto.setEmail(user.getEmail());
         return userDto;
     }

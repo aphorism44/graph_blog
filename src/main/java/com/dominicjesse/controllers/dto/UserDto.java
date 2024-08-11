@@ -1,4 +1,4 @@
-package net.enjoy.springboot.registrationlogin.dto;
+package com.dominicjesse.controllers.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -14,10 +14,6 @@ import lombok.Setter;
 public class UserDto {
 
     private Long id;
-    @NotEmpty
-    private String firstName;
-    @NotEmpty
-    private String lastName;
     @NotEmpty(message = "Email should not be empty")
     @Email
     private String email;

@@ -1,12 +1,12 @@
-package net.enjoy.springboot.registrationlogin;
+package com.dominicjesse;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RegistrationLoginApplication {
+public class BlogApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(RegistrationLoginApplication.class, args);
+        SpringApplication.run(BlogApplication.class, args);
     }
 }

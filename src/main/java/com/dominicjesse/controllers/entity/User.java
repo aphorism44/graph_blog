@@ -1,4 +1,4 @@
-package net.enjoy.springboot.registrationlogin.entity;
+package com.dominicjesse.controllers.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,9 +22,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private String name;
 
     @Column(nullable = false, unique = true)
     private String email;

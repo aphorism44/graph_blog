@@ -1,4 +1,4 @@
-package net.enjoy.springboot.registrationlogin.entity;
+package com.dominicjesse.controllers.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
