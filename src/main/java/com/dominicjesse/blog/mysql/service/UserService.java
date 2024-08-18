@@ -1,9 +1,9 @@
-package com.dominicjesse.controllers.service;
+package com.dominicjesse.blog.mysql.service;
 
 import java.util.List;
 
-import com.dominicjesse.controllers.dto.UserDto;
-import com.dominicjesse.controllers.entity.User;
+import com.dominicjesse.blog.mysql.entity.User;
+import com.dominicjesse.blog.mysql.dto.UserDto;
 
 public interface UserService {
     void saveUser(UserDto userDto);

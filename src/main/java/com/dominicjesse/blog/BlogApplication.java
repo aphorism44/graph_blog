@@ -1,4 +1,4 @@
-package com.dominicjesse;
+package com.dominicjesse.blog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

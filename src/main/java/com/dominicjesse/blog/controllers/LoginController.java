@@ -1,4 +1,4 @@
-package com.dominicjesse.controllers.controller;
+package com.dominicjesse.blog.controllers;
 
 import jakarta.validation.Valid;
 
@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.dominicjesse.controllers.dto.UserDto;
-import com.dominicjesse.controllers.entity.User;
-import com.dominicjesse.controllers.service.UserService;
-import com.dominicjesse.controllers.service.UserServiceImpl;
+import com.dominicjesse.blog.mysql.entity.User;
+import com.dominicjesse.blog.mysql.service.UserService;
+import com.dominicjesse.blog.mysql.dto.UserDto;
 
 import java.util.List;
 

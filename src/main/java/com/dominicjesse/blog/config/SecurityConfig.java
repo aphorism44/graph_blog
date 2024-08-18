@@ -1,4 +1,4 @@
-package com.dominicjesse.controllers.config;
+package com.dominicjesse.blog.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

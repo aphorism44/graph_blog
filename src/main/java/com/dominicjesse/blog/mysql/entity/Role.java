@@ -1,4 +1,4 @@
-package com.dominicjesse.controllers.entity;
+package com.dominicjesse.blog.mysql.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
