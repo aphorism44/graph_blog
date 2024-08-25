@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.dominicjesse.blog.service.UserService;
+import com.dominicjesse.blog.dto.UserDto;
 import com.dominicjesse.blog.mysql.entity.User;
-import com.dominicjesse.blog.mysql.service.UserService;
-import com.dominicjesse.blog.mysql.dto.UserDto;
 
 import java.util.List;
 
@@ -61,13 +61,13 @@ public class LoginController {
         return "redirect:/register?success";
     }
 
-    // handler method to handle list of users
-    @GetMapping("/users")
+    // handler method to handle list of users - MOVED to other controller
+    /*@GetMapping("/users")
     public String users(Model model) {
         List<UserDto> users = userService.findAllUsers();
         model.addAttribute("users", users);
         return "users";
-    }
+    }*/
 
     // handler method to handle login request
     @GetMapping("/login")

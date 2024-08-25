@@ -1,4 +1,4 @@
-package com.dominicjesse.blog.mysql.dto;
+package com.dominicjesse.blog.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

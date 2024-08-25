@@ -1,4 +1,4 @@
-package com.dominicjesse.blog.mysql.service;
+package com.dominicjesse.blog.service;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.dominicjesse.blog.mysql.entity.User;
 import com.dominicjesse.blog.mysql.entity.Role;
+import com.dominicjesse.blog.mysql.entity.User;
 import com.dominicjesse.blog.mysql.repository.UserRepository;
 
 import java.util.Collection;

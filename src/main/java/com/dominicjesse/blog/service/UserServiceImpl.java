@@ -1,13 +1,13 @@
-package com.dominicjesse.blog.mysql.service;
+package com.dominicjesse.blog.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.dominicjesse.blog.mysql.entity.Role;
 import com.dominicjesse.blog.mysql.entity.User;
 import com.dominicjesse.blog.mysql.repository.RoleRepository;
 import com.dominicjesse.blog.mysql.repository.UserRepository;
-import com.dominicjesse.blog.mysql.dto.UserDto;
-import com.dominicjesse.blog.mysql.entity.Role;
+import com.dominicjesse.blog.dto.UserDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
