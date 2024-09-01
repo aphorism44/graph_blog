@@ -33,7 +33,7 @@ public class EntryServiceImpl implements EntryService {
 
 	@Override
 	public List<Entry> getEntriesBetweenDates(Account a, Timestamp start, Timestamp end) {
-		return entryRepo.findAllByCreated_EmailAndCreatedOnBetween(a.getEmail(), start, end);
+		return entryRepo.findAllByCreator_EmailAndCreatedOnBetween(a.getEmail(), start, end);
 	}
 
 }

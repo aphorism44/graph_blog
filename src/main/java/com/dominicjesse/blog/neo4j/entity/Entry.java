@@ -3,7 +3,8 @@ package com.dominicjesse.blog.neo4j.entity;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.Id;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.data.neo4j.core.schema.Relationship;
@@ -11,15 +12,11 @@ import org.springframework.data.neo4j.core.schema.Relationship.Direction;
 
 import com.dominicjesse.blog.enums.EntryVisibility;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-
 @Node
 public class Entry {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long elementId;
+  @Id @GeneratedValue
+  private Long id;
 
   @Property
   private String text;

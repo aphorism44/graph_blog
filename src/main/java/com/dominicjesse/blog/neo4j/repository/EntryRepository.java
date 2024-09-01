@@ -13,6 +13,6 @@ public interface EntryRepository extends ReactiveNeo4jRepository <Entry, Long> {
 	List<Entry> findByCreator_Email(String email);
 	Entry findFirstByCreator_EmailOrderByCreatedOnAsc(String email);
 	Entry findFirstByCreator_EmailOrderByCreatedOnDesc(String email);
-	List<Entry> findAllByCreated_EmailAndCreatedOnBetween(String email, Timestamp start, Timestamp end);
+	List<Entry> findAllByCreator_EmailAndCreatedOnBetween(String email, Timestamp start, Timestamp end);
 	
 }

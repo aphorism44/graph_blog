@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import java.util.Optional;
 
 import com.dominicjesse.blog.service.AccountService;
 import com.dominicjesse.blog.service.EntryService;
@@ -25,8 +26,9 @@ public class BlogController {
 	 	
 	@GetMapping("/home")
 	 public String home(Model model, Principal principal) {
-		Account account = accountService.getAccountByEmail(model.asMap().get("email").toString()).get();
-		AccountDto aDto = new AccountDto(account);
+		String email = principal.getName();
+		Optional<Account> account = accountService.getAccountByEmail(email);
+		AccountDto aDto = new AccountDto(account.get());
 		model.addAttribute("account", aDto);
 		return "home";
 	 }
