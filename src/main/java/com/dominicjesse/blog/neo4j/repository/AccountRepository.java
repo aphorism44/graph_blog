@@ -1,15 +1,14 @@
 package com.dominicjesse.blog.neo4j.repository;
 
 
-import org.springframework.data.neo4j.repository.ReactiveNeo4jRepository;
+import java.util.List;
+
+import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 import com.dominicjesse.blog.neo4j.entity.Account;
 
-import reactor.core.publisher.Mono;
-
-
-public interface AccountRepository extends ReactiveNeo4jRepository<Account, Long> {
+public interface AccountRepository extends Neo4jRepository<Account, String> {
 	
-	Mono<Account> findByEmail(String email);
-	Mono<Account> findByUserId(String userId);
+	List<Account> findAllByEmail(String email);
+	List<Account> findAllByUserId(String userId);
 }

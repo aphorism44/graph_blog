@@ -18,22 +18,26 @@ public class EntryServiceImpl implements EntryService {
 	
 	@Override
 	public List<Entry> getAllEntries(Account a) {
-		return entryRepo.findByCreator_Email(a.getEmail());
+		//return entryRepo.findByCreator_Email(a.getEmail());
+		return null;
 	}
 
 	@Override
 	public Entry getFirstEntry(Account a) {
-		return entryRepo.findFirstByCreator_EmailOrderByCreatedOnAsc(a.getEmail());
+		//return entryRepo.findFirstByCreator_EmailOrderByCreatedOnAsc(a.getEmail());
+		return null;
 	}
 
 	@Override
 	public Entry getLatestEntry(Account a) {
-		return entryRepo.findFirstByCreator_EmailOrderByCreatedOnDesc(a.getEmail());
+		//return entryRepo.findFirstByCreator_EmailOrderByCreatedOnDesc(a.getEmail());
+		return null;
 	}
 
 	@Override
 	public List<Entry> getEntriesBetweenDates(Account a, Timestamp start, Timestamp end) {
-		return entryRepo.findAllByCreator_EmailAndCreatedOnBetween(a.getEmail(), start, end);
+		//return entryRepo.findAllByCreator_EmailAndCreatedOnBetween(a.getEmail(), start, end);
+		return null;
 	}
 
 }

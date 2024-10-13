@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="mysql")
+@Entity
 @Table(name = "users")
 public class User {
 

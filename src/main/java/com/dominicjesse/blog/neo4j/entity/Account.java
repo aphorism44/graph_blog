@@ -15,12 +15,12 @@ import com.dominicjesse.blog.enums.AccountType;
 
 import lombok.Getter;
 
-@Node("neo4j")
+@Node
 @Getter
 public class Account {
  
 	@Id @GeneratedValue
-	private Long id;
+	private String id;
 	
 	@Property
 	private String email;

@@ -1,12 +1,15 @@
 package com.dominicjesse.blog.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dominicjesse.blog.neo4j.entity.Account;
 import com.dominicjesse.blog.neo4j.repository.AccountRepository;
 
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -16,23 +19,26 @@ public class AccountServiceImpl implements AccountService {
 	AccountRepository accountRepo;
 
 	@Override
-	public Flux<Account> outputAllAccounts() {
+	@Transactional
+	public List<Account> outputAllAccounts() {
 		return accountRepo.findAll();
 	}
 
 	@Override
-	public Mono<Account> getAccountByEmail(String email) {
-		return accountRepo.findByEmail(email);
+	public Account getAccountByEmail(String email) {
+		List<Account> accountList = accountRepo.findAllByEmail(email);
+		return accountList.get(0);
 	}
 
 	@Override
-	public Mono<Account> getAccountById(Long id) {
+	public Optional<Account> getAccountById(String id) {
 		return accountRepo.findById(id);
 	}
 
 	@Override
-	public Mono<Account> getAccountByUserId(String id) {
-		return accountRepo.findByUserId(id);
+	public Optional<Account> getAccountByUserId(String id) {
+		//return accountRepo.findByUserId(id);
+		return null;
 	}
 
 
