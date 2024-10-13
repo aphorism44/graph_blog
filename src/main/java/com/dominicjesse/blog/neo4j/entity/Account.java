@@ -15,7 +15,7 @@ import com.dominicjesse.blog.enums.AccountType;
 
 import lombok.Getter;
 
-@Node
+@Node("neo4j")
 @Getter
 public class Account {
  

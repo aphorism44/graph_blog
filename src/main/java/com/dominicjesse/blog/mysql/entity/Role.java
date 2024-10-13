@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity(name="mysql")
 @Table(name = "roles")
 public class Role {
     @Id

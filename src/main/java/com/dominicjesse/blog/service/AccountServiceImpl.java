@@ -1,7 +1,5 @@
 package com.dominicjesse.blog.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +21,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Optional<Account> getAccountByEmail(String email) {
+	public Mono<Account> getAccountByEmail(String email) {
 		return accountRepo.findByEmail(email);
 	}
 
@@ -33,7 +31,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Optional<Account> getAccountByUserId(String id) {
+	public Mono<Account> getAccountByUserId(String id) {
 		return accountRepo.findByUserId(id);
 	}
 

@@ -17,6 +17,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
+    
+    @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -35,6 +38,7 @@ public class SecurityConfig {
                                 .loginPage("/login")
                                 .loginProcessingUrl("/login")
                                 .defaultSuccessUrl("/home", true)
+                                .successHandler(customAuthenticationSuccessHandler)
                                 .permitAll()
                 ).logout(
                         logout -> logout
