@@ -1,7 +1,7 @@
 package com.dominicjesse.blog.neo4j.entity;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
@@ -15,7 +15,7 @@ import com.dominicjesse.blog.enums.AccountType;
 
 import lombok.Getter;
 
-@Node
+@Node("Account")
 @Getter
 public class Account {
  
@@ -26,16 +26,13 @@ public class Account {
 	private String email;
 	
 	@Property
-	private String userId;
+	private Date created_on;
 	
 	@Property
-	private Timestamp createdOn;
+	private Date last_updated;
 	
 	@Property
-	private Timestamp lastUpdated;
-	
-	@Property
-	private AccountType accountType;
+	private AccountType account_type;
 	
 	@Relationship(type = "HAS_FIRST_ENTRY", direction = Direction.OUTGOING)
 	public Entry firstEntry;
@@ -44,14 +41,13 @@ public class Account {
 	public List<Entry> entries;
 
 	public Account() {
-		this.createdOn = Timestamp.valueOf(LocalDateTime.now());
+		this.created_on = Date.from(Instant.now());
 	}
 	
-	public Account(String email, AccountType accountType, String mysqlId) {
+	public Account(String email, AccountType accountType) {
 		this.email = email;
-		this.accountType = accountType;
-		this.createdOn = Timestamp.valueOf(LocalDateTime.now());
-		this.userId = mysqlId;
+		this.account_type = accountType;
+		this.created_on = Date.from(Instant.now());
 	}
 	
 	public String getEmail() {
@@ -59,7 +55,7 @@ public class Account {
 	}
 	
 	public void updateTimestamp() {
-		this.lastUpdated = Timestamp.valueOf(LocalDateTime.now());
+		this.last_updated = Date.from(Instant.now());
 	}
 	
 	public void updateEmail(String email) {
@@ -67,11 +63,11 @@ public class Account {
 	}
 	
 	public void updateAccountType(AccountType accountType) {
-		this.accountType = accountType;
+		this.account_type = accountType;
 	}
 	
 	public String toString() {
-	    return this.email.toString() + ": " + this.accountType.name() + ", account created => " + this.createdOn;
+	    return this.email.toString() + ": " + this.account_type.name() + ", account created => " + this.created_on;
     }
 	
 	@Override

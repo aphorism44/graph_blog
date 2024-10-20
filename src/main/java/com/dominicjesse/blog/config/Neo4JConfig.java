@@ -1,15 +1,16 @@
 package com.dominicjesse.blog.config;
 
+import org.neo4j.cypherdsl.core.renderer.Dialect;
 import org.neo4j.driver.Driver;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.data.neo4j.core.transaction.Neo4jTransactionManager;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableTransactionManagement
@@ -27,5 +28,10 @@ public class Neo4JConfig {
     @Bean
     public PlatformTransactionManager transactionManager(Driver driver) {
         return new Neo4jTransactionManager(driver);
+    }
+    
+    @Bean
+    org.neo4j.cypherdsl.core.renderer.Configuration cypherDslConfiguration() {
+        return org.neo4j.cypherdsl.core.renderer.Configuration.newConfig().withDialect(Dialect.NEO4J_5).build();
     }
 }

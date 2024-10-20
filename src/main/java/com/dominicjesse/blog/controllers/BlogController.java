@@ -34,7 +34,8 @@ public class BlogController {
 		HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");
         Account account = accountService.getAccountByEmail(email);
-        model.addAttribute("account", account);
+        AccountDto accountDto = new AccountDto(account);
+        model.addAttribute("account", accountDto);
 		return "home";
 	 }
 }

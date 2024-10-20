@@ -25,8 +25,9 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
+	@Transactional
 	public Account getAccountByEmail(String email) {
-		List<Account> accountList = accountRepo.findAllByEmail(email);
+		List<Account> accountList = accountRepo.findByEmail(email);
 		return accountList.get(0);
 	}
 

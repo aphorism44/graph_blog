@@ -1,6 +1,6 @@
 package com.dominicjesse.blog.dto;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import com.dominicjesse.blog.neo4j.entity.Account;
 
@@ -19,17 +19,15 @@ public class AccountDto {
     @Email
     private String email;
     private String accountType;
-    private LocalDateTime createdOn;
-    private LocalDateTime lastUpdated;
-    private String userId;
+    private Date createdOn;
+    private Date lastUpdated;
     
     public AccountDto(Account a) {
     	this.id = a.getId();
     	this.email = a.getEmail();
-    	this.accountType = a.getAccountType().toString();
-    	this.createdOn = a.getCreatedOn().toLocalDateTime();
-    	this.lastUpdated = a.getLastUpdated().toLocalDateTime();
-    	this.userId = a.getUserId();
+    	this.accountType = a.getAccount_type().toString();
+    	this.createdOn = a.getCreated_on();
+    	this.lastUpdated = a.getLast_updated();
     }
     
 }

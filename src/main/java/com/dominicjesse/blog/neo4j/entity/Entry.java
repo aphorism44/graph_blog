@@ -13,7 +13,7 @@ import org.springframework.data.neo4j.core.schema.Relationship.Direction;
 import com.dominicjesse.blog.enums.EntryVisibility;
 
 
-@Node
+@Node("Entry")
 public class Entry {
 
   @Id @GeneratedValue
