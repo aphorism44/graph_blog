@@ -9,6 +9,8 @@ import com.dominicjesse.blog.neo4j.entity.Entry;
 public interface EntryService {
 	List<Entry> getAllEntries(Account a);
 	Entry getFirstEntry(Account a);
+	public Entry getPreviousEntry(Entry e);
+	public Entry getNextEntry(Entry e);
 	Entry getLatestEntry(Account a);
 	List<Entry> getEntriesBetweenDates(Account a, Timestamp start, Timestamp end);
 }

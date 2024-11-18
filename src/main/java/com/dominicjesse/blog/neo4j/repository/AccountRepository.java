@@ -10,6 +10,5 @@ import com.dominicjesse.blog.neo4j.entity.Account;
 
 public interface AccountRepository extends Neo4jRepository<Account, String> {
 	
-	@Query("MATCH (a:Account {email: $email}) RETURN a")
 	List<Account> findByEmail(String email);
 }

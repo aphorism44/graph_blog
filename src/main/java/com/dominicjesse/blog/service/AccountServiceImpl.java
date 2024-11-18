@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dominicjesse.blog.enums.AccountType;
 import com.dominicjesse.blog.neo4j.entity.Account;
 import com.dominicjesse.blog.neo4j.repository.AccountRepository;
 
@@ -28,18 +29,14 @@ public class AccountServiceImpl implements AccountService {
 	@Transactional
 	public Account getAccountByEmail(String email) {
 		List<Account> accountList = accountRepo.findByEmail(email);
-		return accountList.get(0);
+		return accountList.size() > 0 ? accountList.get(0) : null;
 	}
-
+	
 	@Override
-	public Optional<Account> getAccountById(String id) {
-		return accountRepo.findById(id);
-	}
-
-	@Override
-	public Optional<Account> getAccountByUserId(String id) {
-		//return accountRepo.findByUserId(id);
-		return null;
+	public Account createAccount(String email, AccountType type) {
+		Account account = new Account(email, type);
+		accountRepo.save(account);
+		return account;
 	}
 
 

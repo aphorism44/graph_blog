@@ -1,8 +1,11 @@
 package com.dominicjesse.blog.neo4j.entity;
 
+import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
@@ -18,36 +21,38 @@ import lombok.Getter;
 @Node("Account")
 @Getter
 public class Account {
- 
-	@Id @GeneratedValue
+	
+	@Id
 	private String id;
 	
 	@Property
 	private String email;
 	
 	@Property
-	private Date created_on;
+	private Date createdOn;
 	
 	@Property
-	private Date last_updated;
+	private Date lastUpdated;
 	
 	@Property
-	private AccountType account_type;
+	private AccountType accountType;
 	
 	@Relationship(type = "HAS_FIRST_ENTRY", direction = Direction.OUTGOING)
 	public Entry firstEntry;
 	
 	@Relationship(type = "HAS_ENTRY", direction = Direction.OUTGOING)
 	public List<Entry> entries;
-
+	
+	//Default constructor needed by Spring Data Neo4j
 	public Account() {
-		this.created_on = Date.from(Instant.now());
+		this.id = UUID.randomUUID().toString();
+		this.createdOn = Timestamp.valueOf(LocalDateTime.now());
 	}
 	
 	public Account(String email, AccountType accountType) {
+		this();
 		this.email = email;
-		this.account_type = accountType;
-		this.created_on = Date.from(Instant.now());
+		this.accountType = accountType;
 	}
 	
 	public String getEmail() {
@@ -55,7 +60,7 @@ public class Account {
 	}
 	
 	public void updateTimestamp() {
-		this.last_updated = Date.from(Instant.now());
+		this.lastUpdated = Date.from(Instant.now());
 	}
 	
 	public void updateEmail(String email) {
@@ -63,11 +68,27 @@ public class Account {
 	}
 	
 	public void updateAccountType(AccountType accountType) {
-		this.account_type = accountType;
+		this.accountType = accountType;
+	}
+	
+	public void setFirstEntry(Entry entry) {
+        this.firstEntry = entry;
+    }
+	
+	public int getNumberOfEntries() {
+		return this.entries.size();
+	}
+	
+	public List<Entry> getAllEntries() {
+		return this.entries;
+	}
+	
+	public void addEntry(Entry entry) {
+		this.entries.add(entry);
 	}
 	
 	public String toString() {
-	    return this.email.toString() + ": " + this.account_type.name() + ", account created => " + this.created_on;
+	    return this.email.toString() + ": " + this.accountType.name() + ", account created => " + this.createdOn;
     }
 	
 	@Override

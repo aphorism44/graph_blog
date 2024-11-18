@@ -32,7 +32,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/index").permitAll()
-                                .requestMatchers("/home").permitAll()
+                                .requestMatchers("/home").authenticated()
+                                .requestMatchers("/entries").authenticated()
+                                .requestMatchers("/edit").authenticated()
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")

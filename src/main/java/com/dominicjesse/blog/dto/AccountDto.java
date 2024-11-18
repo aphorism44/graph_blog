@@ -25,9 +25,9 @@ public class AccountDto {
     public AccountDto(Account a) {
     	this.id = a.getId();
     	this.email = a.getEmail();
-    	this.accountType = a.getAccount_type().toString();
-    	this.createdOn = a.getCreated_on();
-    	this.lastUpdated = a.getLast_updated();
+    	this.accountType = a.getAccountType().toString();
+    	this.createdOn = a.getCreatedOn();
+    	this.lastUpdated = a.getLastUpdated();
     }
     
 }
