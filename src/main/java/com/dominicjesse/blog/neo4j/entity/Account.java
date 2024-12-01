@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
@@ -17,6 +16,7 @@ import org.springframework.data.neo4j.core.schema.Relationship.Direction;
 import com.dominicjesse.blog.enums.AccountType;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Node("Account")
 @Getter
@@ -32,16 +32,19 @@ public class Account {
 	private Date createdOn;
 	
 	@Property
+	@Setter
 	private Date lastUpdated;
 	
 	@Property
+	@Setter
 	private AccountType accountType;
 	
 	@Relationship(type = "HAS_FIRST_ENTRY", direction = Direction.OUTGOING)
-	public Entry firstEntry;
+	@Setter
+	private Entry firstEntry;
 	
 	@Relationship(type = "HAS_ENTRY", direction = Direction.OUTGOING)
-	public List<Entry> entries;
+	private List<Entry> entries;
 	
 	//Default constructor needed by Spring Data Neo4j
 	public Account() {
@@ -55,32 +58,8 @@ public class Account {
 		this.accountType = accountType;
 	}
 	
-	public String getEmail() {
-		return this.email;
-	}
-	
-	public void updateTimestamp() {
-		this.lastUpdated = Date.from(Instant.now());
-	}
-	
-	public void updateEmail(String email) {
-		this.email = email;
-	}
-	
-	public void updateAccountType(AccountType accountType) {
-		this.accountType = accountType;
-	}
-	
-	public void setFirstEntry(Entry entry) {
-        this.firstEntry = entry;
-    }
-	
 	public int getNumberOfEntries() {
 		return this.entries.size();
-	}
-	
-	public List<Entry> getAllEntries() {
-		return this.entries;
 	}
 	
 	public void addEntry(Entry entry) {

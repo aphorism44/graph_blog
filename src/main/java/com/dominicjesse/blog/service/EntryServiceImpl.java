@@ -6,8 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dominicjesse.blog.dto.EntryDto;
+import com.dominicjesse.blog.enums.EntryVisibility;
 import com.dominicjesse.blog.neo4j.entity.Account;
 import com.dominicjesse.blog.neo4j.entity.Entry;
+import com.dominicjesse.blog.neo4j.repository.AccountRepository;
 import com.dominicjesse.blog.neo4j.repository.EntryRepository;
 
 @Service
@@ -16,9 +19,23 @@ public class EntryServiceImpl implements EntryService {
 	@Autowired
 	EntryRepository entryRepo;
 	
+	@Autowired
+	AccountRepository accountRepo;
+	
+	
 	@Override
-	public List<Entry> getAllEntries(Account a) {
-		return entryRepo.findByCreator(a);
+	public Entry createFirstEntry(Account a) {
+		Entry e = new Entry("", EntryVisibility.PUBLIC);
+		a.addEntry(e);
+		accountRepo.save(a);
+		entryRepo.save(e);
+		return e;
+	}
+	
+	@Override
+	public
+	void saveEntry(EntryDto e) {
+		
 	}
 
 	@Override

@@ -1,16 +1,15 @@
 package com.dominicjesse.blog.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.dominicjesse.blog.enums.AccountType;
 import com.dominicjesse.blog.neo4j.entity.Account;
+import com.dominicjesse.blog.neo4j.entity.Entry;
 
-import reactor.core.publisher.Mono;
 
 public interface AccountService {
 	
-	List<Account> outputAllAccounts();
+	List<Entry> getAllAccountEntries(Account a);
 	Account getAccountByEmail(String email);
 	Account createAccount(String email, AccountType type);
 }

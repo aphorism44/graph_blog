@@ -13,9 +13,6 @@ import com.dominicjesse.blog.neo4j.entity.Entry;
 
 public interface EntryRepository extends Neo4jRepository <Entry, String> {
 	
-	
-	List<Entry> findByCreator(Account creator);
-	
 	@Query("MATCH (a:Account)-[:HAS_FIRST_ENTRY]->(e:Entry) WHERE a.email = $email RETURN e")
 	Entry getFirstEntry(String email);
 	

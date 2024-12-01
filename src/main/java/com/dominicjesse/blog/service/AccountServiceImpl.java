@@ -1,17 +1,14 @@
 package com.dominicjesse.blog.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.dominicjesse.blog.enums.AccountType;
 import com.dominicjesse.blog.neo4j.entity.Account;
+import com.dominicjesse.blog.neo4j.entity.Entry;
 import com.dominicjesse.blog.neo4j.repository.AccountRepository;
-
-import reactor.core.publisher.Mono;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -20,13 +17,11 @@ public class AccountServiceImpl implements AccountService {
 	AccountRepository accountRepo;
 
 	@Override
-	@Transactional
-	public List<Account> outputAllAccounts() {
-		return accountRepo.findAll();
+	public List<Entry> getAllAccountEntries(Account a) {
+		return a.getEntries();
 	}
 
 	@Override
-	@Transactional
 	public Account getAccountByEmail(String email) {
 		List<Account> accountList = accountRepo.findByEmail(email);
 		return accountList.size() > 0 ? accountList.get(0) : null;

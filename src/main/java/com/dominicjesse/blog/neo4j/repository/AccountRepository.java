@@ -4,7 +4,6 @@ package com.dominicjesse.blog.neo4j.repository;
 import java.util.List;
 
 import org.springframework.data.neo4j.repository.Neo4jRepository;
-import org.springframework.data.neo4j.repository.query.Query;
 
 import com.dominicjesse.blog.neo4j.entity.Account;
 

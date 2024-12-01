@@ -5,6 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Life Fractal</title>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
@@ -34,24 +36,69 @@
 </nav>
 <div class="container">
     <div class="row">
-        <h1> Your Account </h1>
+        <h1> Entry Editor </h1>
     </div>
-    <table class="table table-striped table-bordered table-hover">
-        <thead class="table-dark">
-        <tr>
-            <td>Email</td>
-            <td>Account Type</td>
-            <td>Created On</td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td th:text="${account.email}"></td>
-            <td th:text="${account.accountType}"></td>
-            <td th:text="${account.createdOn}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <form id="entryForm" th:object="${entry}">
+	    <label for="title">Title:</label>
+	    <input type="text" id="title" name="title" th:field="*{title}" required />
+	    <br><br>
+	
+	    <label for="text">Content:</label>
+	    <textarea id="text" name="text" th:field="*{text}"></textarea>
+	    <br><br>
+	
+	    <button type="button" onclick="saveEntry()">Save Entry</button>
+	    <span id="saveMessage" style="display:none; color:green;">Saved!</span>
+	</form>
+
+<script>
+	//vinitialize TinyMCE
+    tinymce.init({
+        selector: '#text',
+        setup: function (editor) {
+            editor.on('change', function () {
+                $('#saveButton').prop('disabled', false); // Enable save button when content changes
+            });
+        }
+    });
+
+    // Enable save button when the title input is changed
+    $('#title').on('input', function () {
+        $('#saveButton').prop('disabled', false); // Enable save button when title changes
+    });
+
+    // Function to save the entry using AJAX
+    function saveEntry() {
+        // Get the form data
+        const formData = {
+            title: $("#title").val(),
+            text: tinymce.get("text").getContent()
+        };
+
+        // Send an AJAX request to save the entry
+        $.ajax({
+            url: '/entries/save',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function (response) {
+                // Show the saved message
+                $('#saveMessage').show();
+
+                // Hide the saved message after 2 seconds
+                setTimeout(function () {
+                    $('#saveMessage').fadeOut();
+                }, 2000);
+
+                // Disable the save button until further changes are made
+                $('#saveButton').prop('disabled', true);
+            },
+            error: function (error) {
+                alert("An error occurred while saving the entry.");
+            }
+        });
+    }
+</script>
 </div>
 </body>
 </html>
