@@ -1,8 +1,9 @@
 package com.dominicjesse.blog.dto;
 
 import java.util.Date;
+import java.util.List;
 
-import com.dominicjesse.blog.neo4j.entity.Account;
+import com.dominicjesse.blog.neo4j.entity.Entry;
 
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
@@ -19,13 +20,8 @@ public class AccountDto {
     private String accountType;
     private Date createdOn;
     private Date lastUpdated;
+    private Entry firstEntry;
+    private List<EntryDto> entries;
     
-    public AccountDto(Account a) {
-    	this.id = a.getId();
-    	this.email = a.getEmail();
-    	this.accountType = a.getAccountType().toString();
-    	this.createdOn = a.getCreatedOn();
-    	this.lastUpdated = a.getLastUpdated();
-    }
     
 }

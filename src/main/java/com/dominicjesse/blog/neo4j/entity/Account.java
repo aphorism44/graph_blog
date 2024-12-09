@@ -1,8 +1,8 @@
 package com.dominicjesse.blog.neo4j.entity;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -23,9 +23,11 @@ import lombok.Setter;
 public class Account {
 	
 	@Id
+	@Setter
 	private String id;
 	
 	@Property
+	@Setter
 	private String email;
 	
 	@Property
@@ -44,12 +46,14 @@ public class Account {
 	private Entry firstEntry;
 	
 	@Relationship(type = "HAS_ENTRY", direction = Direction.OUTGOING)
+	@Setter
 	private List<Entry> entries;
 	
 	//Default constructor needed by Spring Data Neo4j
 	public Account() {
 		this.id = UUID.randomUUID().toString();
 		this.createdOn = Timestamp.valueOf(LocalDateTime.now());
+		this.entries = new ArrayList<Entry>();
 	}
 	
 	public Account(String email, AccountType accountType) {

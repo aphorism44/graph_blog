@@ -2,7 +2,6 @@ package com.dominicjesse.blog.controllers;
 
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +20,7 @@ import com.dominicjesse.blog.neo4j.entity.Account;
 import com.dominicjesse.blog.neo4j.entity.Entry;
 import com.dominicjesse.blog.service.AccountService;
 import com.dominicjesse.blog.service.EntryService;
+import com.dominicjesse.blog.utilities.EntityMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -33,21 +33,20 @@ public class BlogController {
 	@Autowired
 	private AccountService accountService;
 	
-	 @Autowired
-	 private EntryService entryService;
+	@Autowired
+	private EntryService entryService;
 	 
-	 @Autowired
-	 private HttpSession session;
+	@Autowired
+	private HttpSession session;
 	 	
 	@GetMapping("/home")
 	 public String home(HttpServletRequest request, Model model) {
         String email = (String) session.getAttribute("email");
         Account account = accountService.getAccountByEmail(email);
-        session.setAttribute("account", account);
-        if (account == null) {
+        if (account == null)
         	account = accountService.createAccount(email, AccountType.FREE);
-        }        
-        AccountDto accountDto = new AccountDto(account);
+        session.setAttribute("account", account);
+        AccountDto accountDto = EntityMapper.toAccountDto(account);
         model.addAttribute("account", accountDto);
 		return "home";
 	 }
@@ -55,15 +54,16 @@ public class BlogController {
 	@GetMapping("/entries")
 	public String entries(Model model) {
 		Account currentAccount = (Account) session.getAttribute("account");
-		List<Entry> allEntries = accountService.getAllAccountEntries(currentAccount);
-		List<EntryDto> entryDtos = allEntries.stream().map(EntryDto::new).collect(Collectors.toList());
+		AccountDto currentAccountDto = EntityMapper.toAccountDto(currentAccount);
+		List<EntryDto> entryDtos = currentAccountDto.getEntries();
 		model.addAttribute("entries", entryDtos);
 		return "entries";
 	}
 	
 	@GetMapping("/edit")
 	public String edit(Model model) {
-		Entry currentEntry = (Entry) session.getAttribute("attributeName");
+		REDO TINY MCE PLUGIN USING FREE MODEL
+		Entry currentEntry = (Entry) session.getAttribute("currentEntry");
 		if (currentEntry == null) {
 			Account currentAccount = (Account) session.getAttribute("account");
 			Entry latestEntry = entryService.getLatestEntry(currentAccount);
@@ -71,14 +71,15 @@ public class BlogController {
 				currentEntry = entryService.createFirstEntry(currentAccount);
 			}
 			currentEntry = latestEntry;
+			session.setAttribute("currentEntry", currentEntry);
 		}
-		model.addAttribute("entry", currentEntry);
+		model.addAttribute("entry", EntityMapper.toEntryDto(currentEntry));
 		return "edit";
 	}
 	
 	@PostMapping("/entries/save")
     public ResponseEntity<String> saveEntry(@RequestBody EntryDto entry) {
-        entryService.saveEntry(entry);
+        entryService.saveEntry(EntityMapper.toEntryEntity(entry));
         return new ResponseEntity<>("Entry saved successfully", HttpStatus.OK);
     }
 	 

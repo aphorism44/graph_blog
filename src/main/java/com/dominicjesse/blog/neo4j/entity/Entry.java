@@ -2,6 +2,7 @@ package com.dominicjesse.blog.neo4j.entity;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.data.neo4j.core.schema.Id;
@@ -21,6 +22,7 @@ import lombok.Setter;
 public class Entry {
 
   @Id
+  @Setter
   private String id;
 
   @Property
@@ -50,11 +52,12 @@ public class Entry {
   private EntryVisibility visibility;
   
   @Property
-  private Timestamp createdOn;
+  @Setter
+  private Date createdOn;
   
   @Property
   @Setter
-  private Timestamp lastUpdated;
+  private Date lastUpdated;
   
   //Default constructor needed by Spring Data Neo4j
   public Entry() {

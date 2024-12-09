@@ -1,6 +1,6 @@
 package com.dominicjesse.blog.dto;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import com.dominicjesse.blog.neo4j.entity.Entry;
 
@@ -12,19 +12,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class EntryDto {
-
     private String id;
     private String title;
     private String text;
-    private Timestamp createdOn;
-    
-    public EntryDto(Entry e) {
-    	this.id = e.getId();
-    	this.title = e.getTitle();
-    	this.text = e.getText();
-    	this.createdOn = e.getCreatedOn();
-    }
-
-   
+    private Date createdOn;
+    private Entry previousEntry;
+    private Entry nextEntry;
 }
 

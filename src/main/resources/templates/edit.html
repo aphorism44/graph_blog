@@ -15,7 +15,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Fractal Blog - Home Page</a>
+        <a class="navbar-brand" href="#">Fractal Blog - Editor</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -40,14 +40,14 @@
     </div>
     <form id="entryForm" th:object="${entry}">
 	    <label for="title">Title:</label>
-	    <input type="text" id="title" name="title" th:field="*{title}" required />
+	    <input type="text" id="title" name="title" th:field="*{title}" />
 	    <br><br>
 	
 	    <label for="text">Content:</label>
 	    <textarea id="text" name="text" th:field="*{text}"></textarea>
 	    <br><br>
 	
-	    <button type="button" onclick="saveEntry()">Save Entry</button>
+	    <button type="button" onclick="/entries/save">Save Entry</button>
 	    <span id="saveMessage" style="display:none; color:green;">Saved!</span>
 	</form>
 

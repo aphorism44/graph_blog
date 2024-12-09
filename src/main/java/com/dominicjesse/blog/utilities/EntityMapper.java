@@ -9,7 +9,7 @@ import com.dominicjesse.blog.neo4j.entity.Account;
 import com.dominicjesse.blog.neo4j.entity.Entry;
 
 public class EntityMapper {
-	START HERE
+	
 	public static EntryDto toEntryDto(Entry entry) {
         if (entry == null) {
             return null;
@@ -54,9 +54,8 @@ public class EntityMapper {
                 account.getEntries().stream()
                 .map(EntityMapper::toEntryDto)
                 .collect(Collectors.toList()) : null;
-                
+        
         dto.setEntries(EntryDtos);
-
         return dto;
     }
 
