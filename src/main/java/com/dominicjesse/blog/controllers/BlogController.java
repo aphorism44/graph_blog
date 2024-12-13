@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dominicjesse.blog.dto.AccountDto;
 import com.dominicjesse.blog.dto.EntryDto;
@@ -30,14 +31,19 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class BlogController {
 
-	@Autowired
-	private AccountService accountService;
+	private final AccountService accountService;
 	
-	@Autowired
-	private EntryService entryService;
+	private final EntryService entryService;
 	 
-	@Autowired
-	private HttpSession session;
+	private final HttpSession session;
+	
+	
+	public BlogController(AccountService accountService, EntryService entryService, HttpSession session) {
+        this.accountService = accountService;
+		this.entryService = entryService;
+		this.session = session;
+    }
+	
 	 	
 	@GetMapping("/home")
 	 public String home(HttpServletRequest request, Model model) {
@@ -62,7 +68,6 @@ public class BlogController {
 	
 	@GetMapping("/edit")
 	public String edit(Model model) {
-		REDO TINY MCE PLUGIN USING FREE MODEL
 		Entry currentEntry = (Entry) session.getAttribute("currentEntry");
 		if (currentEntry == null) {
 			Account currentAccount = (Account) session.getAttribute("account");
@@ -76,6 +81,31 @@ public class BlogController {
 		model.addAttribute("entry", EntityMapper.toEntryDto(currentEntry));
 		return "edit";
 	}
+	
+	@PostMapping("/entries/navigate")
+    public String navigateEntry(@RequestParam String direction, @RequestBody EntryDto formEntryDto, HttpSession session) {
+        Entry currentEntry = (Entry) session.getAttribute("currentEntry");
+        Account currentAccount = (Account) session.getAttribute("account");
+        
+        
+        if (currentEntry != null) {
+        	entryService.saveEntry(EntityMapper.toEntryEntity(formEntryDto));
+            Entry nextEntry;
+            if ("previous".equals(direction)) {
+            	nextEntry = entryService.getPreviousEntry(currentEntry); 
+            } else {
+            	nextEntry = entryService.getNextEntry(currentEntry);
+                // Create a new entry if no next entry exists
+                if (nextEntry == null) {
+                	nextEntry = entryService.createNewEntry(formEntryDto.getTitle(), formEntryDto.getText(), currentAccount, currentEntry);
+                }
+            }
+            // Update the session with the new entry
+            session.setAttribute("currentEntry", nextEntry);
+        }
+
+        return "redirect:/entries/edit";
+    }
 	
 	@PostMapping("/entries/save")
     public ResponseEntity<String> saveEntry(@RequestBody EntryDto entry) {

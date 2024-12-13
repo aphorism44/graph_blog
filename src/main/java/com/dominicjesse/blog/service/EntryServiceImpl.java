@@ -23,9 +23,20 @@ public class EntryServiceImpl implements EntryService {
 	
 	@Override
 	public Entry createFirstEntry(Account a) {
-		Entry e = new Entry("", EntryVisibility.PUBLIC);
+		Entry e = new Entry("", "", EntryVisibility.PUBLIC);
 		a.addEntry(e);
 		a.setFirstEntry(e);
+		accountRepo.save(a);
+		entryRepo.save(e);
+		return e;
+	}
+	
+	@Override
+	public Entry createNewEntry(String title, String text, Account a, Entry previousEntry) {
+		Entry e = new Entry(text, title, EntryVisibility.PUBLIC);
+		e.setPreviousEntry(previousEntry);		
+		a.addEntry(e);
+		
 		accountRepo.save(a);
 		entryRepo.save(e);
 		return e;

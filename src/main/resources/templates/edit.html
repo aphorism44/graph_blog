@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Life Fractal</title>
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="/tinymce/tinymce.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           rel="stylesheet"
@@ -38,67 +38,78 @@
     <div class="row">
         <h1> Entry Editor </h1>
     </div>
-    <form id="entryForm" th:object="${entry}">
-	    <label for="title">Title:</label>
-	    <input type="text" id="title" name="title" th:field="*{title}" />
-	    <br><br>
-	
-	    <label for="text">Content:</label>
-	    <textarea id="text" name="text" th:field="*{text}"></textarea>
-	    <br><br>
-	
-	    <button type="button" onclick="/entries/save">Save Entry</button>
-	    <span id="saveMessage" style="display:none; color:green;">Saved!</span>
-	</form>
+    <h1>Edit Entry</h1>
+	<form id="entryForm" action="#" th:action="@{/entries/save}" method="post" th:object="${entry}">
+    <!-- Entry ID (hidden input for tracking) -->
+    <input type="hidden" id="entryId" name="id" th:field="*{id}" />
+
+    <!-- Title Field -->
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" th:field="*{title}" required />
+    <br><br>
+
+    <!-- Content Field -->
+    <label for="text">Content:</label>
+    <textarea id="content" name="text" th:field="*{text}"></textarea>
+    <br><br>
+
+    <!-- Navigation Buttons -->
+    <div>
+        <!-- Previous Button -->
+        <button type="button" id="prevButton" th:if="${entry.previousEntryId != null}"
+                onclick="navigateToEntry('previous')">Previous</button>
+        
+        <!-- Save Button -->
+        <button type="submit">Save</button>
+        
+        <!-- Next Button -->
+        <button type="button" id="nextButton" onclick="navigateToEntry('next')">Next</button>
+    </div>
+</form>
 
 <script>
-	//vinitialize TinyMCE
+    // Initialize TinyMCE
     tinymce.init({
-        selector: '#text',
-        setup: function (editor) {
-            editor.on('change', function () {
-                $('#saveButton').prop('disabled', false); // Enable save button when content changes
-            });
-        }
+        selector: '#content',
+        plugins: 'autolink lists link charmap preview',
+        toolbar: 'undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link',
+        menubar: false,
+        height: 300
     });
 
-    // Enable save button when the title input is changed
-    $('#title').on('input', function () {
-        $('#saveButton').prop('disabled', false); // Enable save button when title changes
-    });
-
-    // Function to save the entry using AJAX
-    function saveEntry() {
-        // Get the form data
-        const formData = {
-            title: $("#title").val(),
-            text: tinymce.get("text").getContent()
+    // Navigate to the previous or next entry
+    function navigateToEntry(direction) {
+        // Post navigation request to backend, which will update session and reload
+        $.post('/entries/navigate', { direction: direction }, function () {
+            window.location.reload(); // Reload page to reflect session-updated entry
+        });
+    }
+    
+    // AJAX Submission for Save Button
+    $('#saveButton').on('click', function () {
+        // Prepare JSON payload
+        const entry = {
+            id: $('#entryId').val(),
+            title: $('#title').val(),
+            text: tinymce.get("content").getContent() // Get content from TinyMCE editor
         };
 
-        // Send an AJAX request to save the entry
+        // Send AJAX POST request
         $.ajax({
             url: '/entries/save',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify(formData),
+            data: JSON.stringify(entry),
             success: function (response) {
-                // Show the saved message
-                $('#saveMessage').show();
-
-                // Hide the saved message after 2 seconds
-                setTimeout(function () {
-                    $('#saveMessage').fadeOut();
-                }, 2000);
-
-                // Disable the save button until further changes are made
-                $('#saveButton').prop('disabled', true);
+                alert("Entry saved successfully!");
             },
-            error: function (error) {
-                alert("An error occurred while saving the entry.");
+            error: function (xhr, status, error) {
+                alert("An error occurred while saving the entry: " + error);
             }
         });
-    }
+    });
 </script>
+
 </div>
 </body>
 </html>

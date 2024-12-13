@@ -66,9 +66,10 @@ public class Entry {
       this.title = "";
   }
 
-  public Entry(String text, EntryVisibility visibility) {
+  public Entry(String text, String title, EntryVisibility visibility) {
 	this();
     this.text = text;
+    this.title = title;
     this.visibility = visibility;
   }
   
