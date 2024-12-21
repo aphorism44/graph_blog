@@ -19,9 +19,5 @@ public class AccountDto {
     private String email;
     private String accountType;
     private Date createdOn;
-    private Date lastUpdated;
-    private Entry firstEntry;
-    private List<EntryDto> entries;
-    
-    
+    private Date lastUpdated;    
 }

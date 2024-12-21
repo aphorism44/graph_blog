@@ -1,8 +1,6 @@
 package com.dominicjesse.blog.dto;
 
-import java.util.Date;
-
-import com.dominicjesse.blog.neo4j.entity.Entry;
+import java.time.LocalDateTime;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +13,8 @@ public class EntryDto {
     private String id;
     private String title;
     private String text;
-    private Date createdOn;
-    private Entry previousEntry;
-    private Entry nextEntry;
+    private LocalDateTime createdOn;
+    boolean hasPreviousEntry;
+    boolean hasNextEntry;
 }
 

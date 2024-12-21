@@ -56,14 +56,15 @@
     <!-- Navigation Buttons -->
     <div>
         <!-- Previous Button -->
-        <button type="button" id="prevButton" th:if="${entry.previousEntryId != null}"
+        <button type="button" id="prevButton" th:if="${entry.hasPreviousEntry}"
                 onclick="navigateToEntry('previous')">Previous</button>
         
         <!-- Save Button -->
         <button type="submit">Save</button>
         
         <!-- Next Button -->
-        <button type="button" id="nextButton" onclick="navigateToEntry('next')">Next</button>
+        <button type="button" id="nextButton" th:if="${entry.hasNextEntry}"
+        		onclick="navigateToEntry('next')">Next</button>
     </div>
 </form>
 

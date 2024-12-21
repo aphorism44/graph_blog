@@ -1,8 +1,6 @@
 package com.dominicjesse.blog.neo4j.entity;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.data.neo4j.core.schema.Id;
@@ -53,16 +51,16 @@ public class Entry {
   
   @Property
   @Setter
-  private Date createdOn;
+  private LocalDateTime createdOn;
   
   @Property
   @Setter
-  private Date lastUpdated;
+  private LocalDateTime lastUpdated;
   
   //Default constructor needed by Spring Data Neo4j
   public Entry() {
       this.id = UUID.randomUUID().toString();
-      this.createdOn = Timestamp.valueOf(LocalDateTime.now());
+      this.createdOn = LocalDateTime.now();
       this.title = "";
   }
 

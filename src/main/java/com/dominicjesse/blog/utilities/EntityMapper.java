@@ -20,7 +20,11 @@ public class EntityMapper {
         dto.setTitle(entry.getTitle());
         dto.setText(entry.getText());
         dto.setCreatedOn(entry.getCreatedOn());
-
+        boolean hasPreviousEntry = entry.getPreviousEntry() != null ? true : false;
+        boolean hasNextEntry = entry.getNextEntry() != null ? true : false;
+        dto.setHasPreviousEntry(hasPreviousEntry);
+        dto.setHasNextEntry(hasNextEntry);
+        
         return dto;
     }
 
@@ -48,36 +52,11 @@ public class EntityMapper {
         AccountDto dto = new AccountDto();
         dto.setId(account.getId());
         dto.setEmail(account.getEmail());
-
-        // Convert the list of Entry entities to EntryDtos
-        List<EntryDto> EntryDtos = account.getEntries() != null ? 
-                account.getEntries().stream()
-                .map(EntityMapper::toEntryDto)
-                .collect(Collectors.toList()) : null;
+        dto.setAccountType(account.getAccountType().name());
+        dto.setCreatedOn(account.getCreatedOn());
+        dto.setLastUpdated(account.getLastUpdated());
         
-        dto.setEntries(EntryDtos);
         return dto;
-    }
-
-    // Convert AccountDto to Account entity
-    public static Account toAccountEntity(AccountDto AccountDto) {
-        if (AccountDto == null) {
-            return null;
-        }
-
-        Account account = new Account();
-        account.setId(AccountDto.getId());
-        account.setEmail(AccountDto.getEmail());
-
-        // Convert the list of EntryDtos to Entry entities
-        List<Entry> entries = AccountDto.getEntries() != null ? 
-                AccountDto.getEntries().stream()
-                .map(EntityMapper::toEntryEntity)
-                .collect(Collectors.toList()) : null;
-
-        account.setEntries(entries);
-
-        return account;
     }
 
 }

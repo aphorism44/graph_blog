@@ -2,8 +2,8 @@ package com.dominicjesse.blog.controllers;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -60,8 +60,10 @@ public class BlogController {
 	@GetMapping("/entries")
 	public String entries(Model model) {
 		Account currentAccount = (Account) session.getAttribute("account");
-		AccountDto currentAccountDto = EntityMapper.toAccountDto(currentAccount);
-		List<EntryDto> entryDtos = currentAccountDto.getEntries();
+		List<Entry> entries = currentAccount.getEntries();
+		List<EntryDto> entryDtos = entries.stream()
+                .map(EntityMapper::toEntryDto)
+                .collect(Collectors.toList());
 		model.addAttribute("entries", entryDtos);
 		return "entries";
 	}
@@ -78,7 +80,8 @@ public class BlogController {
 			currentEntry = latestEntry;
 			session.setAttribute("currentEntry", currentEntry);
 		}
-		model.addAttribute("entry", EntityMapper.toEntryDto(currentEntry));
+		EntryDto entryDto = EntityMapper.toEntryDto(currentEntry);
+		model.addAttribute("entry", entryDto);
 		return "edit";
 	}
 	
