@@ -5,8 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Life Fractal</title>
-    <script src="/tinymce/tinymce.min.js"></script>
+    <script src="/js/tinymce/tinymce.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
@@ -38,7 +40,6 @@
     <div class="row">
         <h1> Entry Editor </h1>
     </div>
-    <h1>Edit Entry</h1>
 	<form id="entryForm" action="#" th:action="@{/entries/save}" method="post" th:object="${entry}">
     <!-- Entry ID (hidden input for tracking) -->
     <input type="hidden" id="entryId" name="id" th:field="*{id}" />
@@ -63,52 +64,111 @@
         <button type="submit">Save</button>
         
         <!-- Next Button -->
-        <button type="button" id="nextButton" th:if="${entry.hasNextEntry}"
-        		onclick="navigateToEntry('next')">Next</button>
-    </div>
+		<button type="button" id="nextButton" th:if="${entry.hasNextEntry}"
+		        onclick="navigateToEntry('next')">Next</button>
+		
+		<!-- New Entry Button -->
+		<button type="button" id="newEntryButton" th:if="${!entry.hasNextEntry}"
+		        onclick="createNewEntry()">New Entry</button>
+	</div>
 </form>
 
 <script>
-    // Initialize TinyMCE
+    // Initialize TinyMCE on the textarea with the ID "content"
     tinymce.init({
-        selector: '#content',
-        plugins: 'autolink lists link charmap preview',
+        selector: '#content', // Matches the textarea with id="content"
+        plugins: 'autolink lists link charmap preview', // Plugins for extended functionality
         toolbar: 'undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link',
-        menubar: false,
-        height: 300
+        menubar: false, // Remove the default menu bar
+        height: 300, // Set the height of the editor
+        branding: false, // Remove the TinyMCE branding
+        statusbar: false, // Hide the status bar below the editor
+        license_key: 'gpl' //use open source version
     });
 
-    // Navigate to the previous or next entry
-    function navigateToEntry(direction) {
-        // Post navigation request to backend, which will update session and reload
-        $.post('/entries/navigate', { direction: direction }, function () {
-            window.location.reload(); // Reload page to reflect session-updated entry
-        });
-    }
-    
-    // AJAX Submission for Save Button
-    $('#saveButton').on('click', function () {
-        // Prepare JSON payload
-        const entry = {
-            id: $('#entryId').val(),
-            title: $('#title').val(),
-            text: tinymce.get("content").getContent() // Get content from TinyMCE editor
-        };
+    // Function to handle navigation between entries
+function navigateToEntry(direction) {
+    const entryId = document.getElementById('entryId').value;
+    fetch('/entries/navigate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content')
+        },
+        body: new URLSearchParams({ currentEntryId: entryId, direction: direction })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Navigation failed');
+        window.location.href = '/edit';
+    })
+    .catch(error => alert('Error: ' + error.message));
+}
 
-        // Send AJAX POST request
-        $.ajax({
-            url: '/entries/save',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(entry),
-            success: function (response) {
-                alert("Entry saved successfully!");
-            },
-            error: function (xhr, status, error) {
-                alert("An error occurred while saving the entry: " + error);
-            }
-        });
+// Function to handle saving the current entry
+function saveEntry() {
+    const entryId = document.getElementById('entryId').value; // Get the current entry ID
+    const title = document.getElementById('title').value; // Get the title value
+    const text = tinymce.get("content").getContent(); // Get the content from TinyMCE editor
+
+    // Retrieve CSRF token from meta tag or hidden input
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+    // Create the entry object to send
+    const entryData = {
+        id: entryId,
+        title: title,
+        text: text
+    };
+
+    // Make a POST request to save the entry
+    fetch('/entries/save', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken // Add CSRF token to headers
+        },
+        body: JSON.stringify(entryData) // Send the entry data as JSON
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to save entry');
+        }
+        return response.text(); // The server responds with success
+    })
+    .then(() => {
+        alert('Entry saved successfully!');
+    })
+    .catch(error => {
+        alert('Error: ' + error.message);
     });
+}
+
+// Function to handle creating a new entry
+function createNewEntry() {
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+    fetch('/entries/create', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+        return response.text();
+    })
+    .then(() => {
+        window.location.href = '/edit'; // Redirect to the edit page
+    })
+    .catch(error => {
+        console.error('Error during fetch:', error);
+        alert(`Error: ${error.message}`);
+    });
+}
 </script>
 
 </div>

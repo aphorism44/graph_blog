@@ -43,8 +43,8 @@ public class EntryServiceImpl implements EntryService {
 	}
 	
 	@Override
-	public void saveEntry(Entry e) {
-		entryRepo.save(e);
+	public Entry saveEntry(Entry e) {
+		return entryRepo.save(e);
 	}
 
 	@Override

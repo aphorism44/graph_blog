@@ -10,7 +10,7 @@ import com.dominicjesse.blog.neo4j.entity.Entry;
 public interface EntryService {
 	Entry createFirstEntry(Account a);
 	Entry createNewEntry(String title, String text, Account a, Entry previousEntry);
-	void saveEntry(Entry e);
+	Entry saveEntry(Entry e);
 	Entry getFirstEntry(Account a);
 	Entry getPreviousEntry(Entry e);
 	Entry getNextEntry(Entry e);

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -25,16 +26,17 @@ public class SecurityConfig {
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+    
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
+        http
+        .csrf(csrf -> csrf
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/index").permitAll()
-                                .requestMatchers("/home").authenticated()
-                                .requestMatchers("/entries").authenticated()
-                                .requestMatchers("/edit").authenticated()
+                                .requestMatchers("entries/create","home","/entries/**", "/edit").authenticated()
+                                .requestMatchers("/css/**", "/js/**", "/images/**", "/tinymce/**").permitAll()
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
